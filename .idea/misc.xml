@@ -4,6 +4,7 @@
     <option name="originalFiles">
       <list>
         <option value="$PROJECT_DIR$/TestJava/pom.xml" />
+        <option value="$PROJECT_DIR$/HelloRedis/pom.xml" />
       </list>
     </option>
   </component>
