@@ -1,0 +1,55 @@
+package gui;
+
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+public class TFMathTest extends Frame {
+
+  private static final long serialVersionUID = 1L;
+  TextField num1;
+  TextField num2;
+  TextField sum;
+
+  public static void main(String[] args) {
+    new TFMathTest().launchFrame();
+  }
+
+  public void launchFrame() {
+    num1 = new TextField();
+    num2 = new TextField();
+    sum = new TextField();
+    num1.setColumns(10);
+    num2.setColumns(10);
+    sum.setColumns(15);
+    setLayout(new FlowLayout());
+    //setSize(500, 30);
+    Label lblPlus = new Label("+");
+    Button btnEqual = new Button("=");
+    btnEqual.addActionListener(new MyListener(this));
+    add(num1);
+    add(lblPlus);
+    add(num2);
+    add(btnEqual);
+    add(sum);
+    pack();
+    setVisible(true);
+  }
+}
+
+class MyListener implements ActionListener {
+
+  private TFMathTest tfmt;
+
+  public MyListener(TFMathTest tfmt) {
+    this.tfmt = tfmt;
+  }
+
+  public void actionPerformed(ActionEvent e) {
+    String s1 = tfmt.num1.getText();
+    String s2 = tfmt.num2.getText();
+    int i1 = Integer.parseInt(s1);
+    int i2 = Integer.parseInt(s2);
+    tfmt.sum.setText(String.valueOf(i1 + i2));
+  }
+}

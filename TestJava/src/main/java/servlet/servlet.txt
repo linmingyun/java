@@ -1,0 +1,42 @@
+1.在tomcat的webapps目录下新建一个目录test里面有一个文件夹叫WEB-INF，其下必须有一个文件叫web.xml，内容如下：
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app id="WebApp_ID" version="2.4" xmlns="http://java.sun.com/xml/ns/j2ee" 
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
+</web-app>
+在test目录下新建一个文件asdf.html，然后访问http://localhost:8080/test/asdf.html
+WEB-INF目录下还有一个lib目录存放该项目用到的库文件以及一个classes目录存放编译好的servlet
+META-INF存放该项目的上下文信息，可有可无
+
+2.右击项目名——Build Path——Add External Archives——...——servlet-api.jar
+eclipse在Navigator视图下可以看到class文件
+将HelloWorldServlet.class复制到WEB-INF/classes/下，然后在web.xml中加入如下代码：
+	<servlet>
+		<servlet-name>HW</servlet-name>
+		<servlet-class>HelloWorldServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>HW</servlet-name>
+		<url-pattern>/asdf</url-pattern>
+	</servlet-mapping>
+然后访问http://localhost:8080/test/asdf即可
+如果有包名(假设为servlet)的话，则将HelloWorldServlet.class复制到WEB-INF/classes/servlet/下，且
+<servlet-class>servlet.HelloWorldServlet</servlet-class>
+
+3.HTML提交到Servlet
+submitToServlet.html
+<form method="get" action="servlet/ReceiveFromHTML">
+<input type="text" name="param1" value="param1"><br><br>
+<input type="text" name="param2" value="param2"><br><br>
+<input type="text" name="param3" value="param3"><br><br>
+<input type="submit" value="提交">
+</form>
+web.xml
+<servlet>
+	<servlet-name>ReceiveFromHTML</servlet-name>
+	<servlet-class>servlet.ReceiveFromHTML</servlet-class>
+</servlet>
+<servlet-mapping>
+	<servlet-name>ReceiveFromHTML</servlet-name>
+	<url-pattern>/servlet/ReceiveFromHTML</url-pattern>
+</servlet-mapping>
