@@ -7,11 +7,14 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="HelloRedis" />
+        <module name="HelloStruts2" />
         <module name="TestJava" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="HelloRedis" target="1.5" />
+      <module name="HelloStruts" target="1.5" />
+      <module name="HelloStruts2" target="1.5" />
       <module name="TestJava" target="1.5" />
     </bytecodeTargetLevel>
   </component>
