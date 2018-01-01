@@ -1,0 +1,17 @@
+ create table legends(
+ id int(4) primary key not null auto_increment,
+ heroname varchar(20) not null,
+ herodesc varchar(20) not null,
+ position varchar(10) not null
+ );
+ 
+ create table shuangseqiu (
+ stage int(8) primary key not null,
+ redone int(2),
+ redtwo int(2),
+ redthree int(2),
+ redfour int(2),
+ redfive int(2),
+ redsix int(2),
+ blueone int(2)
+ );
