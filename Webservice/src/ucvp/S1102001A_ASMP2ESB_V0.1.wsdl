@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://schemas.xmlsoap.org/wsdl/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:tns="http://siebel.com/AccountUpload" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsdLocal1="http://www.siebel.com/xml/UCVP%20Inter%20BO" targetNamespace="http://siebel.com/AccountUpload">
+	<types>
+		<xsd:schema elementFormDefault="qualified" targetNamespace="http://www.siebel.com/xml/UCVP%20Inter%20BO" xmlns:mrm="http://siebel.com/AccountUpload">
+			<xsd:annotation/>
+			<xsd:element name="ListOfUcvpInterBo" type="xsdLocal1:ListOfUcvpInterBo"/>
+			<xsd:complexType name="ListOfUcvpInterBoTopElmt">
+				<xsd:sequence>
+					<xsd:element maxOccurs="1" minOccurs="1" name="ListOfUcvpInterBo" type="xsdLocal1:ListOfUcvpInterBo"/>
+				</xsd:sequence>
+			</xsd:complexType>
+			<xsd:complexType name="ListOfUcvpInterBo">
+				<xsd:sequence>
+					<xsd:element maxOccurs="unbounded" minOccurs="0" name="UcvpAccountInter" type="xsdLocal1:UcvpAccountInter"/>
+				</xsd:sequence>
+			</xsd:complexType>
+			<xsd:complexType name="UCVPInterBOResp">
+				<xsd:sequence>
+					<xsd:element maxOccurs="1" minOccurs="0" name="InterId" type="xsd:string"/>
+					<xsd:element maxOccurs="1" minOccurs="0" name="Id" type="xsd:string"/>
+					<xsd:element maxOccurs="1" minOccurs="0" name="ErrorMessage" type="xsd:string"/>
+				</xsd:sequence>
+			</xsd:complexType>
+			<xsd:complexType name="UcvpAccountInter">
+				<xsd:sequence>
+						<xsd:element name="Id" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="Created" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="CreatedBy" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="Updated" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="UpdatedBy" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="ConflictId" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="ModId" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="Searchspec" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="ADSUserId" maxOccurs="1" minOccurs="1" type="xsd:string"/>
+					<xsd:element name="Address" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="AreaCode" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="AreaName" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="BankName" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="Brand" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="CarNumber" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="CarUse" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="ChassNumber" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="CityName" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="Contact" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="ContactMobile" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="CreditCard" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="CustId" maxOccurs="1" minOccurs="1" type="xsd:string"/>
+					<xsd:element name="CustomerId" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="CustomerName" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="CustomerType" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="DMFPLX" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="DMGSXC" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="DaiKuanType" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="DataConsumer" maxOccurs="1" minOccurs="1" type="xsd:string"/>
+					<xsd:element name="DataSource" maxOccurs="1" minOccurs="1" type="xsd:string"/>
+					<xsd:element name="DealerCode" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="DealerName" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="Duties" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="EGNumber" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="EducationLevel" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="Email" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="ErrorCode" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="ErrorMessage" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="ExtNumber" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="FamilyIncome" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="Gender" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="HandtakeTime" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="IDNumber" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="IDType" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="InterId" maxOccurs="1" minOccurs="1" type="xsd:string"/>
+					<xsd:element name="InteriorCode" maxOccurs="1" minOccurs="1" type="xsd:string"/>
+					<xsd:element name="InvoiceNumber" maxOccurs="1" minOccurs="1" type="xsd:string"/>
+					<xsd:element name="InvoiceTime" maxOccurs="1" minOccurs="1" type="xsd:string"/>
+					<xsd:element name="IsJoinClub" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="IsOwner" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="JSFXDM" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="JobFunc" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="KeyCustomerName" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="LinkTel" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="MileNumber" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="Mobile" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="ModelCode" maxOccurs="1" minOccurs="1" type="xsd:string"/>
+					<xsd:element name="ModelVersion" maxOccurs="1" minOccurs="1" type="xsd:string"/>
+					<xsd:element name="ModelYear" maxOccurs="1" minOccurs="1" type="xsd:string"/>
+					<xsd:element name="OldSaleId" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="OnSaleFlag" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="OnSaleRemark" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="OwnerMarriage" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="PackageCodeList" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="PaymentType" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="ProspectId" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="Province" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="RateCode" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="RefuseReason" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="SaleCode" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="SaleId" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="SaleType" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="SalesIDNumber" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="SalesName" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="SpecialFeeFlag" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="Status" maxOccurs="1" minOccurs="1" type="xsd:string"/>
+					<xsd:element name="TotalPrice" maxOccurs="1" minOccurs="1" type="xsd:string"/>
+					<xsd:element name="VIN" maxOccurs="1" minOccurs="1" type="xsd:string"/>
+					<xsd:element name="VSLSBZ" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="VSSBCL" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="VSXSRY" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="XSCLDM" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="XSCLM1" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="XSCXDL" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="ZipCode" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="CardCode" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="ColorCode" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="LnkId" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="LnkName" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="LnkTel" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="LnkType" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="CustomerModelId" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="Ext1" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="Ext10" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="Ext11" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="Ext12" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="Ext13" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="Ext14" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="Ext15" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="Ext16" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="Ext17" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="Ext18" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="Ext19" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="Ext2" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="Ext20" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="Ext3" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="Ext4" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="Ext5" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="Ext6" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="Ext7" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="Ext8" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="Ext9" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="Birthday" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="CarMasterType" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="CarNo" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="SeriesCode" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="Company" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="Industry" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="ModelName" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="PurchaseDate" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="SaleDate" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="SeriesName" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="SourceType" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="ColorName" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="ContactIDType" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="ContactIDNumber" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="ContactType" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+				</xsd:sequence>
+				<xsd:attribute name="Operation" type="xsd:string"/>
+				<xsd:attribute name="Uiactive" type="xsd:string"/>
+				<xsd:attribute name="Uiselected" type="xsd:string"/>
+			</xsd:complexType>
+		</xsd:schema>
+		<xsd:schema elementFormDefault="qualified" targetNamespace="http://siebel.com/AccountUpload" xmlns:mrm="http://siebel.com/AccountUpload">
+			<xsd:import namespace="http://www.siebel.com/xml/UCVP%20Inter%20BO"/>
+			<xsd:element name="UCVP_spcAccount_spcUpload_Input">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="RequestHead">
+							<xsd:complexType>
+								<xsd:sequence maxOccurs="1" minOccurs="1">
+									<xsd:element name="RequestID" type="xsd:string"/>
+									<xsd:element name="SourceSystem" type="xsd:string"/>
+									<xsd:element name="TargetSystem" type="xsd:string"/>
+									<xsd:element name="ServiceName" type="xsd:string"/>
+								</xsd:sequence>
+							</xsd:complexType>
+						</xsd:element>
+						<xsd:element name="RequestBody">
+							<xsd:complexType>
+								<xsd:sequence maxOccurs="1" minOccurs="1">
+									<xsd:element name="Siebel_spcOperation_spcObject_spcId" type="xsd:string"/>
+									<xsd:element name="ListOfUcvpInterBo" type="xsdLocal1:ListOfUcvpInterBo"/>
+								</xsd:sequence>
+							</xsd:complexType>
+						</xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="UCVP_spcAccount_spcUpload_Output">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="Output">
+							<xsd:complexType>
+								<xsd:sequence maxOccurs="1" minOccurs="1">
+									<xsd:element name="ListOfUCVPInterBOResp">
+										<xsd:complexType>
+											<xsd:sequence maxOccurs="1" minOccurs="1">
+												<xsd:element maxOccurs="500" minOccurs="0" name="UCVPInterBOResp" type="xsdLocal1:UCVPInterBOResp"/>
+											</xsd:sequence>
+										</xsd:complexType>
+									</xsd:element>
+								</xsd:sequence>
+							</xsd:complexType>
+						</xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+		</xsd:schema>
+	</types>
+	<message name="UCVP_spcAccount_spcUpload_Input">
+		<part name="UCVP_spcAccount_spcUpload_Input" element="tns:UCVP_spcAccount_spcUpload_Input"/>
+	</message>
+	<message name="UCVP_spcAccount_spcUpload_Output">
+		<part name="UCVP_spcAccount_spcUpload_Output" element="tns:UCVP_spcAccount_spcUpload_Output"/>
+	</message>
+	<portType name="UCVP_spcAccount_spcUpload_spcWorkflow">
+		<operation name="UCVP_spcAccount_spcUpload">
+			<input message="tns:UCVP_spcAccount_spcUpload_Input"/>
+			<output message="tns:UCVP_spcAccount_spcUpload_Output"/>
+		</operation>
+	</portType>
+	<binding name="UCVP_spcAccount_spcUpload_spcWorkflow" type="tns:UCVP_spcAccount_spcUpload_spcWorkflow">
+		<soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+		<operation name="UCVP_spcAccount_spcUpload">
+			<soap:operation soapAction="document/http://siebel.com/AccountUpload:UCVP_spcAccount_spcUpload"/>
+			<input>
+				<soap:body use="literal"/>
+			</input>
+			<output>
+				<soap:body use="literal"/>
+			</output>
+		</operation>
+	</binding>
+	<service name="UCVP_spcAccount_spcUpload_spcWorkflow">
+		<port name="UCVP_spcAccount_spcUpload_spcWorkflow" binding="tns:UCVP_spcAccount_spcUpload_spcWorkflow">
+			<soap:address location="http://10.122.20.109:7081/services/asmp2dceupload"/>
+		</port>
+	</service>
+</definitions>
