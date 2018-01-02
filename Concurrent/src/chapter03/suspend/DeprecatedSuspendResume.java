@@ -15,7 +15,7 @@ package chapter03.suspend;
  * 这段时间不适宜挂起线程，但因为线程不能控制何时调用它的suspend方法，
  * 所以这种情况是不可避免的。
  * 当然，即使线程不被挂起（注释掉挂起和恢复线程的两行代码），
- * 如果在main线程中执行asr.areValuesEqual（）进行比较时，
+ * 如果在main线程中执行dsr.areValuesEqual（）进行比较时，
  * 恰逢stepOne操作执行完，而stepTwo操作还没执行，
  * 那么得到的结果同样可能是false（情况2）。
  */
