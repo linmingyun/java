@@ -6,6 +6,11 @@ package chapter02.interrupt;
  * 如果线程被中断，而且中断状态尚不清楚，那么，这个方法返回true。
  * 与isInterrupted()不同，它将自动重置中断状态为false，
  * 第二次调用Thread.interrupted()方法，总是返回false，除非中断了线程。
+ * 这里补充下yield和join方法的使用。
+ * join方法用线程对象调用，如果在一个线程A中调用另一个线程B的join方法，
+ * 线程A将会等待线程B执行完毕后再执行。
+ * yield可以直接用Thread类调用，yield让出CPU执行权给同等级的线程，
+ * 如果没有相同级别的线程在等待CPU的执行权，则该线程继续执行。
  */
 public class InterruptReset extends Object {
     public static void main(String[] args) {
