@@ -1,0 +1,34 @@
+     加锁（synchronized同步）的功能不仅仅局限于互斥行为，同时还存在另外一个重要的方面：内存可见性。我们不仅希望防止某个线程正在使用对象状态而另一个线程在同时修改该状态，而且还希望确保当一个线程修改了对象状态后，其他线程能够看到该变化。而线程的同步恰恰也能够实现这一点。
+     内置锁可以用于确保某个线程以一种可预测的方式来查看另一个线程的执行结果。为了确保所有的线程都能看到共享变量的最新值，可以在所有执行读操作或写操作的线程上加上同一把锁。下图示例了同步的可见性保证。
+
+     当线程A执行某个同步代码块时，线程B随后进入由同一个锁保护的同步代码块，这种情况下可以保证，当锁被释放前，A看到的所有变量值（锁释放前，A看到的变量包括y和x）在B获得同一个锁后同样可以由B看到。换句话说，当线程B执行由锁保护的同步代码块时，可以看到线程A之前在同一个锁保护的同步代码块中的所有操作结果。如果在线程A unlock M之后，线程B才进入lock M，那么线程B都可以看到线程A unlock M之前的操作，可以得到i=1，j=1。如果在线程B unlock M之后，线程A才进入lock M，那么线程B就不一定能看到线程A中的操作，因此j的值就不一定是1。
+     现在考虑如下代码：
+
+public class  MutableInteger
+{
+    private int value;
+
+    public int get(){
+        return value;
+    }
+    public void set(int value){
+        this.value = value;
+    }
+}
+
+     以上代码中，get和set方法都在没有同步的情况下访问value。如果value被多个线程共享，假如某个线程调用了set，那么另一个正在调用get的线程可能会看到更新后的value值，也可能看不到。
+     通过对set和get方法进行同步，可以使MutableInteger成为一个线程安全的类，如下：
+
+public class  SynchronizedInteger
+{
+    private int value;
+
+    public synchronized int get(){
+        return value;
+    }
+    public synchronized void set(int value){
+        this.value = value;
+    }
+}
+
+     对set和get方法进行了同步，加上了同一把对象锁，这样get方法可以看到set方法中value值的变化，从而每次通过get方法取得的value的值都是最新的value值。
