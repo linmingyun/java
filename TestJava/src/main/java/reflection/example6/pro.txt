@@ -1,0 +1,2 @@
+className = reflection.example6.Student
+methodName = show
