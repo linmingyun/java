@@ -11,7 +11,7 @@
                         http://www.springframework.org/schema/mvc        
                         http://www.springframework.org/schema/mvc/spring-mvc-4.2.xsd    
                         http://www.springframework.org/schema/cache     
-                        http://www.springframework.org/schema/cache/spring-cache-4.2.xsd">  
+                        http://www.springframework.org/schema/cache/spring-cache-4.2.xsd">
 
     <!-- 加载配置文件 -->  
     <context:property-placeholder location="classpath:redis.properties" />  
@@ -33,7 +33,7 @@
         <property name="testOnBorrow" value="${redis.testOnBorrow}" />    
         <!--在空闲时检查有效性, 默认false  -->  
         <property name="testWhileIdle" value="${redis.testWhileIdle}" />    
-    </bean >  
+    </bean>
       
       
     <!-- redis集群配置 哨兵模式 -->  
@@ -101,8 +101,12 @@
     </bean>
 
     <!-- 自定义redis工具类,在需要缓存的地方注入此类 -->
-    <bean id="redisUtil" class="com.heimu.RedisUtil">  
+    <bean id="redisUtil" class="com.heimu.example1.RedisUtil">
         <property name="redisTemplate" ref="redisTemplate" />  
-    </bean>  
+    </bean>
+
+    <bean id="userDao" class="com.heimu.example1.UserDaoImpl">
+        <property name="redisTemplate" ref="redisTemplate" />
+    </bean>
 
 </beans>
