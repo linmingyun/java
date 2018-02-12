@@ -1,4 +1,4 @@
-package com.heimu;
+package com.heimu.util;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -9,16 +9,16 @@ import java.util.Map;
 public class TestRedis {
 
     public static void main(String[] args) throws Exception {
-        //@SuppressWarnings("resource")
-        ApplicationContext context=new ClassPathXmlApplicationContext("classpath:spring-redis.xml");
-        RedisUtil redisUtil=(RedisUtil) context.getBean("redisUtil");  
+        @SuppressWarnings("resource")
+		ApplicationContext context = new ClassPathXmlApplicationContext("classpath:applicationContext.xml");
+        RedisUtil redisUtil = (RedisUtil) context.getBean("redisUtil");
           
         //=====================testString======================  
-        redisUtil.set("name", "ÍõÈü³¬");  
+        redisUtil.set("name", "çŽ‹èµ›è¶…");  
         redisUtil.set("age", 24);  
-        redisUtil.set("address", "ºÓ±±ºªµ¦");  
+        redisUtil.set("address", "æ²³åŒ—é‚¯éƒ¸");  
           
-        System.out.println(redisUtil.set("address", "ºÓ±±ºªµ¦", 50));
+        System.out.println(redisUtil.set("address", "æ²³åŒ—é‚¯éƒ¸", 50));
         System.out.println(redisUtil.get("age"));
 
         redisUtil.set("age", 1000);
@@ -31,13 +31,13 @@ public class TestRedis {
         System.out.println(incr);
 
         Map<String,Object> map=new HashMap<String,Object>();
-        map.put("name", "ÍõÈü³¬"); 
+        map.put("name", "çŽ‹èµ›è¶…"); 
         map.put("age", 24);
-        map.put("address", "ºÓ±±ºªµ¦666"); 
+        map.put("address", "æ²³åŒ—é‚¯éƒ¸666"); 
         redisUtil.hmset("15532002725", map,1000);
 
         redisUtil.del("15532002725");
-        redisUtil.hset("15532002725","address","ºÓ±±ºªµ¦",1000);
+        redisUtil.hset("15532002725","address","æ²³åŒ—é‚¯éƒ¸",1000);
         redisUtil.hdel("15532002725", "name");
         System.out.println(redisUtil.sSetAndTime("15532002727",1000,"haha"));
         System.out.println(redisUtil.sGet("15532002727"));
