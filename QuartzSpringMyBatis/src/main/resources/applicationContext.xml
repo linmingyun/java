@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+		xmlns="http://www.springframework.org/schema/beans" 
+		xmlns:aop="http://www.springframework.org/schema/aop" 
+		xmlns:context="http://www.springframework.org/schema/context" 
+		xmlns:tx="http://www.springframework.org/schema/tx" 
+		xmlns:cache="http://www.springframework.org/schema/cache" 
+		xmlns:p="http://www.springframework.org/schema/p" 
+		xsi:schemaLocation="http://www.springframework.org/schema/beans 
+		http://www.springframework.org/schema/beans/spring-beans-4.0.xsd 
+		http://www.springframework.org/schema/aop 
+		http://www.springframework.org/schema/aop/spring-aop-4.0.xsd 
+		http://www.springframework.org/schema/context 
+		http://www.springframework.org/schema/context/spring-context-4.0.xsd 
+		http://www.springframework.org/schema/tx 
+		http://www.springframework.org/schema/tx/spring-tx-4.0.xsd 
+		http://www.springframework.org/schema/cache 
+		http://www.springframework.org/schema/cache/spring-cache-4.0.xsd">
+
+    <!-- 自动扫描 ,将带有注解的类纳入spring容器管理 -->
+	<context:component-scan base-package="com.heimu"/>
+
+	<!-- spring对于属性文件有自己的管理方式，通过spring的管理，可以直接使用@Value的方式直接得到属性值。 -->
+	<bean id="configProperties" class="org.springframework.beans.factory.config.PropertiesFactoryBean">  
+	    <property name="locations">  
+	        <list>  
+	            <value>classpath:resources.properties</value>  
+	        </list>  
+	    </property>  
+    </bean>
+    <bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PreferencesPlaceholderConfigurer">  
+    	<property name="properties" ref="configProperties" />  
+    </bean>
+
+    <!-- dataSource 配置 -->  
+    <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">  
+        <!-- 基本属性 url、user、password -->
+        <property name="driverClassName" value="${jdbc.driver}" /> 
+        <property name="url" value="${jdbc.url}"/>  
+        <property name="username" value="${jdbc.username}"/>  
+        <property name="password" value="${jdbc.password}"/>  
+        <!-- 配置初始化大小、最小、最大 -->  
+        <property name="initialSize" value="${ds.initialSize}"/>  
+        <property name="minIdle" value="${ds.minIdle}"/>  
+        <property name="maxActive" value="${ds.maxActive}"/>  
+        <!-- 配置获取连接等待超时的时间 -->  
+        <property name="maxWait" value="${ds.maxWait}"/>  
+    </bean>
+
+    <!-- mybatis文件配置，扫描所有mapper文件 -->  
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean" p:dataSource-ref="dataSource"  
+          p:configLocation="classpath:mybatis-config.xml"  
+          p:mapperLocations="classpath:com/heimu/mapper/*.xml"
+          p:typeAliasesPackage="com.heimu.model">
+    </bean>
+
+    <!-- spring与mybatis整合配置，扫描所有dao -->  
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer" p:basePackage="com.heimu.mapper,com.heimu.dao"
+          p:sqlSessionFactoryBeanName="sqlSessionFactory"/>
+          
+    <!-- 对dataSource数据源进行事务管理 -->
+    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager"  
+          p:dataSource-ref="dataSource"/>
+          
+    <!-- 事务管理 通知 -->
+    <tx:advice id="txAdvice" transaction-manager="transactionManager">
+        <tx:attributes>  
+            <!-- 对insert,update,delete 开头的方法进行事务管理,只要有异常就回滚 -->  
+            <tx:method name="insert*" propagation="REQUIRED" rollback-for="java.lang.Throwable"/>  
+            <tx:method name="update*" propagation="REQUIRED" rollback-for="java.lang.Throwable"/>  
+            <tx:method name="delete*" propagation="REQUIRED" rollback-for="java.lang.Throwable"/>  
+            <!-- select,count开头的方法,开启只读,提高数据库访问性能 -->  
+            <tx:method name="select*" read-only="true"/>  
+            <tx:method name="count*" read-only="true"/>  
+            <!-- 对其他方法使用默认的事务管理 -->  
+            <tx:method name="*"/>  
+        </tx:attributes>  
+    </tx:advice>
+    
+    <!-- 事务 aop 配置 -->
+    <aop:config>
+        <aop:pointcut id="serviceMethods" expression="execution(* com.heimu.service..*(..))"/>
+        <aop:advisor advice-ref="txAdvice" pointcut-ref="serviceMethods"/>
+    </aop:config>
+    
+    <!-- 启用对事务注解的支持 -->
+    <tx:annotation-driven transaction-manager="transactionManager"/>
+    
+    <import resource="spring-dataSource.xml" />
+    <import resource="spring-quartz.xml" />
+    <import resource="spring-scheduler.xml" />
+</beans>
