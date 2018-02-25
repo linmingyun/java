@@ -19,8 +19,8 @@ public class VinCombine {
       String str = "";
       int i = 0;
       while ((s = br.readLine()) != null) {
-    	  str += ""+s.trim()+",";
-//    	  str += "'" + s.trim()+"',";
+//    	  str += ""+s.trim()+",";
+    	  str += "'" + s.trim()+"',";
     	  i++;
     	  if(i%1000==0)str+="//////////";
           //fs.println(s);
