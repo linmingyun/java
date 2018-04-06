@@ -8,8 +8,9 @@ import java.util.Date;
  * 比较日期大小
  */
 public class TestDateCompare {
-    
-    static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"); //设置日期格式
+
+    //设置日期格式
+    static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
     public static void main(String[] args) throws ParseException {
         Date startDate = sdf.parse("2016-04-15 11:11:11");
