@@ -7,7 +7,7 @@ hdparm -i /dev/hda бчапр╩╦Ж╢еел╣д╪э╧╧льпт
 hdparm -tT /dev/sda тз╢еелиож╢пп╡Бйтпт╤ах║╡ывВ
 cat /proc/cpuinfo отй╬CPU info╣дпео╒
 cat /proc/interrupts отй╬жп╤о
-cat /proc/meminfo пёяИдз╢Фй╧сц
+cat /proc/meminfo ╡И©╢дз╢Фй╧сцгИ©Ж  free -h / sudo atop / top / ...
 cat /proc/swaps отй╬ддп╘swap╠╩й╧сц
 cat /proc/version отй╬дз╨к╣д╟Ф╠╬
 cat /proc/net/dev отй╬мЬбГййеДфВ╪╟мЁ╪ф
@@ -107,6 +107,7 @@ mount -t smbfs -o username=user,password=pass //WinClient/share /mnt/share ╧ртьр
 
 ╢еел©у╪Д
 df -h отй╬ря╬╜╧рть╣д╥жгЬап╠М
+df -lh ╡И©╢╢еелй╧сцгИ©Ж
 ls -lSr |more ртЁъ╢Г╢Сп║ееапнд╪Ч╨мд©б╪
 du -sh dir1 ╧юкЦд©б╪ 'dir1' ря╬╜й╧сц╣д╢еел©у╪Д'
 du -sk * | sort -rn ртхща©╢Сп║н╙рю╬щрю╢нотй╬нд╪Ч╨мд©б╪╣д╢Сп║
