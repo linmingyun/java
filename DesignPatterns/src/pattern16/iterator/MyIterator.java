@@ -9,7 +9,6 @@ public class MyIterator implements Iterator {
         this.collection = collection;
     }
 
-    @Override
     public Object previous() {
         if(pos > 0){
             pos--;
@@ -17,7 +16,6 @@ public class MyIterator implements Iterator {
         return collection.get(pos);
     }
 
-    @Override
     public Object next() {
         if(pos<collection.size()-1){
             pos++;
@@ -25,7 +23,6 @@ public class MyIterator implements Iterator {
         return collection.get(pos);
     }
 
-    @Override
     public boolean hasNext() {
         if(pos<collection.size()-1){
             return true;
@@ -34,7 +31,6 @@ public class MyIterator implements Iterator {
         }
     }
 
-    @Override
     public Object first() {
         pos = 0;
         return collection.get(pos);

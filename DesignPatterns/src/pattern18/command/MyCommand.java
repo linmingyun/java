@@ -8,7 +8,6 @@ public class MyCommand implements Command {
         this.receiver = receiver;
     }
 
-    @Override
     public void exe() {
         receiver.action();
     }

@@ -8,7 +8,7 @@ public class Decorator implements Sourceable {
         super();
         this.source = source;
     }
-    @Override
+
     public void method() {
         System.out.println("before decorator!");
         source.method();

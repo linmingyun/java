@@ -8,7 +8,6 @@ public class MyTask implements Runnable {
 	}
 
 	@SuppressWarnings("static-access")
-	@Override
 	public void run() {
 		System.out.println("ÕıÔÚÖ´ĞĞtask " + taskNum);
 		try {

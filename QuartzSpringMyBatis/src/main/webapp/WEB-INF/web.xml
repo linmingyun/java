@@ -1,0 +1,20 @@
+<!DOCTYPE web-app PUBLIC
+ "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
+ "http://java.sun.com/dtd/web-app_2_3.dtd" >
+
+<web-app id="WebApp" version="2.4" xmlns="http://java.sun.com/xml/ns/j2ee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
+
+  <!-- 配置Spring上下文监听器 -->
+  <listener>
+    <!-- 启动Web容器时，自动装配ApplicationContext的配置信息。 -->
+    <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+  </listener>
+  <!-- 配置Spring配置文件路径 -->
+  <context-param>
+    <param-name>contextConfigLocation</param-name> <!-- 加上这行可以自定义配置文件名 -->
+    <param-value>classpath:applicationContext.xml</param-value>
+  </context-param>
+
+</web-app>

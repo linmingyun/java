@@ -12,7 +12,6 @@ import pattern02.factorymethod.common.Sender;
  * 这样做，拓展性较好！
  */
 public class Test {
-
     public static void main(String[] args) {
         Provider provider = new SendMailFactory();
         Sender sender = provider.produce();

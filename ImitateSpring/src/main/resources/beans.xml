@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans>
+    <bean id="studentDao" class="xml.StudentDaoImp" />
+    <bean id="studentService" class="xml.StudentServiceImp">
+        <property name="studentDao" bean="studentDao"/>
+    </bean>
+</beans>

@@ -9,7 +9,7 @@ public class TestThread1 {
     //Thread t = new Thread(r);
     //t.start();
 
-    for (int i = 0; i < 100; i++) {
+    for (int i = 0; i < 1000; i++) {
       System.out.println("Main Thread:------" + i);
     }
   }
@@ -19,7 +19,7 @@ public class TestThread1 {
 class Runner1 extends Thread {
 
   public void run() {
-    for (int i = 0; i < 100; i++) {
+    for (int i = 0; i < 1000; i++) {
       System.out.println("Runner1 :" + i);
     }
   }

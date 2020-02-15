@@ -6,7 +6,7 @@ import java.util.concurrent.TimeUnit;
 
 public class TestThreadPoolExecutor {
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws InterruptedException {
 		ThreadPoolExecutor executor = new ThreadPoolExecutor(5, 10, 200, TimeUnit.MILLISECONDS,
 				new ArrayBlockingQueue<Runnable>(5));
 
