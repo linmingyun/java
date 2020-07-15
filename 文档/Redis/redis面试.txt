@@ -184,4 +184,7 @@ cluster的出现是为了解决单机Redis容量有限的问题，将Redis的数
 4.当前Redis集群不支持NAT环境或者IP，端口重新映射的环境。
 cluster这种模式适合数据量巨大的缓存要求，当数据量不是很大使用sentinel即可。
 
+redis分布式锁
+https://www.cnblogs.com/wlwl/p/11651409.html
+https://www.cnblogs.com/cjsblog/p/9831423.html
 
