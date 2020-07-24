@@ -23,7 +23,7 @@ CP without A：如果不要求A（可用），相当于每个请求都需要在�
 Eureka - Netflix
 • 2012-2014开源，发布第一个release版本；
 • Eureka提供官方的控制台来查询服务注册情况。
-• Eureka 2.0宣布停止开发。 
+• Eureka 2.0宣布停止开发。
 • Eureka在服务实例规模在5000左右的时候，就已经出现服务不可用的问题，甚至在压测的过程中，如果并发的线程数过高，就会造成Eureka crash。不过如果服务规模在1000上下，几乎目前所有的注册中心都可以满足。
 Eureka 保证 AP
 就是针对 Zookeeper 出现的这一问题，Eureka选择了优先保证可用性。
@@ -35,7 +35,7 @@ Nacos – 阿里巴巴
 • 2018年开源，2019年1.0 发布。
 • Nacos 是 Dynamic Naming and Configuration Service 的缩写，动态命名和配置服务。Nacos 是阿里开源的注册中心+ 配置中心服务。
 • Nacos提供官方的控制台来查询服务注册情况。 • 后续还会继续增强控制台的能力，增加控制台登录和权限的管控，监控体系和Metrics的暴露。
-• Nacos 服务实例注册的支撑量约为100万，服务的数量可以达到10万以上。 
+• Nacos 服务实例注册的支撑量约为100万，服务的数量可以达到10万以上。
 • 因为 Nacos 服务之间通过Raft 算法 保证一致性，所以建议 Nacos 部署的节点数为大于 3 的奇数。
 Nacos支持两种模式的部署AP和CP
 
@@ -70,3 +70,10 @@ Zookeeper 是保证数据的一致性的，但是并不是强一致的。
         ▪️服务消费者直接通过调用被@LoadBalanced注解修饰过的RestTemplate来实现面向服务的接口调用。
 
         这样，我们就可以将服务提供者的高可用以及服务消费者的负载均衡调用一起实现了。
+
+https://www.jianshu.com/p/1bd66db5dc46
+
+feign
+
+https://www.cnblogs.com/crazymakercircle/p/11965726.html
+https://www.jianshu.com/p/8c7b92b4396c
