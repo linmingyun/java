@@ -1,0 +1,148 @@
+第一章 MyBatis中使用#和$书写占位符有什么区别？ 
+
+#将传入的数据都当成一个字符串，会对传入的数据自动加上引号；$将传入的数据直接显示生成在SQL中。注意：使用$占位符可能会导致SQL注射攻击，能用#的地方就不要使用$，写order by子句的时候应该用$而不是#。
+
+
+
+第二章 解释一下MyBatis中命名空间（namespace）的作用。 
+
+在大型项目中，可能存在大量的SQL语句，这时候为每个SQL语句起一个唯一的标识（ID）就变得并不容易了。为了解决这个问题，在MyBatis中，可以为每个映射文件起一个唯一的命名空间，这样定义在这个映射文件中的每个SQL语句就成了定义在这个命名空间中的一个ID。只要我们能够保证每个命名空间中这个ID是唯一的，即使在不同映射文件中的语句ID相同，也不会再产生冲突了。
+
+
+
+第三章 MyBatis中的动态SQL是什么意思？ 
+
+对于一些复杂的查询，我们可能会指定多个查询条件，但是这些条件可能存在也可能不存在，例如在58同城上面找房子，我们可能会指定面积、楼层和所在位置来查找房源，也可能会指定面积、价格、户型和所在位置来查找房源，此时就需要根据用户指定的条件动态生成SQL语句。如果不使用持久层框架我们可能需要自己拼装SQL语句，还好MyBatis提供了动态SQL的功能来解决这个问题。MyBatis中用于实现动态SQL的元素主要有： 
+
+- if 
+
+- choose / when / otherwise 
+
+- trim 
+
+- where 
+
+- set 
+
+- foreach
+
+第四章 Mybatis工作原理
+工作原理解析
+mybatis应用程序通过SqlSessionFactoryBuilder从mybatis-config.xml配置文件（也可以用Java文件配置的方式，需要添加@Configuration）中构建出SqlSessionFactory（SqlSessionFactory是线程安全的）；
+
+然后，SqlSessionFactory的实例直接开启一个SqlSession，再通过SqlSession实例获得Mapper对象并运行Mapper映射的SQL语句，完成对数据库的CRUD和事务提交，之后关闭SqlSession。
+
+说明：SqlSession是单线程对象，因为它是非线程安全的，是持久化操作的独享对象，类似jdbc中的Connection，底层就封装了jdbc连接。
+
+详细流程如下：
+
+1、加载mybatis全局配置文件（数据源、mapper映射文件等），解析配置文件，MyBatis基于XML配置文件生成Configuration，和一个个MappedStatement（包括了参数映射配置、动态SQL语句、结果映射配置），其对应着<select | update | delete | insert>标签项。
+
+2、SqlSessionFactoryBuilder通过Configuration对象生成SqlSessionFactory，用来开启SqlSession。
+
+3、SqlSession对象完成和数据库的交互：
+a、用户程序调用mybatis接口层api（即Mapper接口中的方法）
+b、SqlSession通过调用api的Statement ID找到对应的MappedStatement对象
+c、通过Executor（负责动态SQL的生成和查询缓存的维护）将MappedStatement对象进行解析，sql参数转化、动态sql拼接，生成jdbc Statement对象
+d、JDBC执行sql。
+
+e、借助MappedStatement中的结果映射关系，将返回结果转化成HashMap、JavaBean等存储结构并返回。
+
+第五章 Mybatis的缓存机制
+mybatis的查询缓存分为一级缓存和二级缓存，一级缓存是SqlSession级别的缓存，二级缓存时mapper级别的缓存，二级缓存是多个SqlSession共享的。mybatis通过缓存机制减轻数据压力，提高数据库性能。
+一级缓存：
+mybatis的一级缓存是SQLSession级别的缓存，在操作数据库时需要构造SqlSession对象，在对象中有一个HashMap用于存储缓存数据，不同的SqlSession之间缓存数据区域（HashMap）是互相不影响的。
+一级缓存的作用域是SqlSession范围的，当在同一个SqlSession中执行两次相同的sql语句时，第一次执行完毕会将数据库中查询的数据写到缓存（内存）中，第二次查询时会从缓存中获取数据，不再去底层进行数据库查询，从而提高了查询效率。需要注意的是：如果SqlSession执行了DML操作（insert、update、delete），并执行commit（）操作，mybatis则会清空SqlSession中的一级缓存，这样做的目的是为了保证缓存数据中存储的是最新的信息，避免出现脏读现象。
+当一个SqlSession结束后该SqlSession中的一级缓存也就不存在了，Mybatis默认开启一级缓存，不需要进行任何配置。
+注意：Mybatis的缓存机制是基于id进行缓存，也就是说Mybatis在使用HashMap缓存数据时，是使用对象的id作为key，而对象作为value保存
+二级缓存：
+二级缓存是mapper级别的缓存，使用二级缓存时，多个SqlSession使用同一个Mapper的sql语句去操作数据库，得到的数据会存在二级缓存区域，它同样是使用HashMapper进行数据存储，相比一级缓存SqlSession，二级缓存的范围更大，多个SqlSession可以共用二级缓存，二级缓存是跨SqlSession的。
+二级缓存是多个SqlSession共享的，其作用域是mapper的同一个namespace，不同的SqlSession两次执行相同的namespace下的sql语句，且向sql中传递的参数也相同，即最终执行相同的sql语句，则第一次执行完毕会将数据库中查询的数据写到缓存（内存），第二次查询时会从缓存中获取数据，不再去底层数据库查询，从而提高查询效率。
+Mybatis默认没有开启二级缓存，需要在setting全局参数中配置开启二级缓存。
+在mybatis-config.xml中配置：
+<settings>          
+    <setting name="cacheEnabled" value="true"/>  
+</settings>  
+cacheEnabled的value为true表示在此配置文件下开启二级缓存，该属性默认为false。
+在EmployeeMapper.xml中配置：
+<!-- 开启当前mapper的namespace下的二级缓存 -->  
+<cache eviction="LRU" flushInterval="60000" size="512" readOnly="true"/>  
+以上配置创建了一个LRU缓存，并每隔60秒刷新，最大存储512个对象，而且返回的对象被认为是只读。
+
+
+第六章 Mybatis批量插入
+
+第一种：普通for循环插入
+public void testInsertBatch2() throws Exception {
+    long start = System.currentTimeMillis();
+    User user;
+    SqlSession sqlSession = sqlSessionTemplate.getSqlSessionFactory().openSession(false);
+    UserDao mapper = sqlSession.getMapper(UserDao.class);
+    for (int i = 0; i < 500; i++) {
+        user = new User();
+        user.setId("test" + i);
+        user.setName("name" + i);
+        user.setDelFlag("0");
+        mapper.insert(user);
+    }
+    sqlSession.commit();
+    long end = System.currentTimeMillis();
+    System.out.println("---------------" + (start - end) + "---------------");
+}
+
+<insert id="insert">
+    INSERT INTO t_user (id, name, del_flag)
+          VALUES(#{id}, #{name}, #{delFlag})
+</insert>
+
+第二种：mybatis BATCH模式插入
+@Test
+public void testInsertBatch2() throws Exception {
+    long start = System.currentTimeMillis();
+    User user;
+    SqlSession sqlSession = sqlSessionTemplate.getSqlSessionFactory().openSession(ExecutorType.BATCH, false);//跟上述sql区别
+    UserDao mapper = sqlSession.getMapper(UserDao.class);
+    for (int i = 0; i < 500; i++) {
+        user = new User();
+        user.setId("test" + i);
+        user.setName("name" + i);
+        user.setDelFlag("0");
+        mapper.insert(user);
+    }
+    sqlSession.commit();
+    long end = System.currentTimeMillis();
+    System.out.println("---------------" + (start - end) + "---------------");
+}
+
+<insert id="insert">
+    INSERT INTO t_user (id, name, del_flag)
+          VALUES(#{id}, #{name}, #{delFlag})
+</insert>
+
+第三种：foreach方式插入
+@Test
+public void testInsertBatch() throws Exception {
+    long start = System.currentTimeMillis();
+    List<User> list = new ArrayList<>();
+    User user;
+    for (int i = 0; i < 10000; i++) {
+        user = new User();
+        user.setId("test" + i);
+        user.setName("name" + i);
+        user.setDelFlag("0");
+        list.add(user);
+    }
+    userService.insertBatch(list);
+    long end = System.currentTimeMillis();
+    System.out.println("---------------" + (start - end) + "---------------");
+}
+
+<insert id="insertBatch">
+    INSERT INTO t_user (id, name, del_flag)
+    VALUES
+    <foreach collection ="list" item="user" separator =",">
+         (#{user.id}, #{user.name}, #{user.delFlag})
+    </foreach >
+</insert>
+
+特别注意：mysql默认接受sql的大小是1048576(1M)，即第三种方式若数据量超过1M会报如下异常：（可通过调整MySQL安装目录下的my.ini文件中[mysqld]段的＂max_allowed_packet = 1M＂）

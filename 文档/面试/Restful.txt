@@ -1,0 +1,13 @@
+Get 查询
+Post 新增
+Put 修改
+Delete 删除
+
+https://studio.restlet.com/
+
+https://editor.swagger.io/
+
+Generate Server --> spring
+
+linmingyun/linmingyun1988
+

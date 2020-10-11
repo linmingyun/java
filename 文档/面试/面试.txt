@@ -1,0 +1,57 @@
+spring事务传播机制
+zookeeper
+文件复制
+分布式存储
+redis持久化几种方式
+分布式锁
+文件分片上传
+http报文格式
+https
+对称加密、非对称加密
+执行计划
+执行顺序rbo、cbo
+联合索引和单索引的区别
+泛型接口子类实现
+连接池使用的设计模式
+replace方法怎么实现的
+
+springboot启动
+spring启动
+hint
+TPS
+2017-10-05 - Postgresql全球开发组今天宣布，PostgreSQL 10 正式发布，Postgresql作为世界上最先进的开源关系型数据库， 10 是迄今为止的最新版本。
+
+ribbon feign zuul 原理
+eureka zookeeper 区别
+mysql主从复制 查看执行计划命令
+mq如何防止重复消费
+分布式事务两阶段提交 怎么实现
+
+spring boot启动方式
+spring boot默认日志框架
+linux grep
+linux查文件前几行内容
+docker
+springcloud能否实现分布式事务
+静态代码块什么时候执行
+spring容器启动指定执行某个方法
+mybatis批量新增
+幂等性
+接口入参校验（入参个数很多难道用if else）
+
+垃圾收集器有哪些，有什么区别
+kafka rocketmq
+linux部署springboot项目
+
+spring事务嵌套回滚问题
+jvm性能优化调优
+对象是否都在堆中
+索引顺序
+mybatis缓存
+redis点赞排行
+线程状态
+vector
+通过系统导入千万数据文件
+
+看过哪些开源框架源码
+日志框架用到适配器模式？

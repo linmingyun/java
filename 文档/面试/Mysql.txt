@@ -1,0 +1,167 @@
+第一章 mysql常用函数
+
+合并字符串函数：concat(str1,str2,str3…)
+用于将多个字符串合并成一个字符串，如果传入的值中有null，那么最终结果是null
+如果想要在多个字符串合并结果中将每个字符串都分隔一下，可以使用concat_ws(分隔符,str1,str2,str3…),如果传入的分隔符为null，那么最终结果是null（不过这时候如果str有为null不影响结果）
+
+比较字符串大小函数：strcmp(str1,str2)
+用于比较两个字符串的大小。左大于右时返回1，左等于右时返回0，，左小于于右时返回-1，
+strcmp类似编程语言中的比较字符串函数（依据ascll码？），会从左到右逐个比较，直到有一个不等就返回结果，否则比较到结尾。
+
+获取字符串字节数函数：length(str)
+用于获取字符串字节长度（返回字节数，因此要注意字符集）
+
+获取字符串字符数函数：char_length(str)
+用于获取字符串长度
+
+字母大小写转换函数：大写：upper(x),ucase(x)；小写lower(x),lcase(x)
+
+字符串查找函数：
+find_in_set(str1,str2)
+返回字符串str1在str2中的位置，str2包含若干个以逗号分隔的字符串（可以把str2看出一个列表，元素是多个字符串，查找结果是str1在str2这个列表中的索引位置，从1开始）
+field(str,str1,str2,str3…)
+与find_in_set类似，但str2由一个类似列表的字符串变成了多个字符串，返回str在str1,str2,str3…中的位置。
+locate(str1,str2)：
+返回子串str1在字符串str2中的位置
+position(str1 IN str2)
+返回子串str1在字符串str2中的位置
+instr(str1,str2)
+返回子串str2在字符串str1中的位置【注意这里调转了】
+
+获取指定位置的子串：
+elt(index,str1,str2,str3…)
+返回指定index位置的字符串
+left(str,n)
+截取str左边n个字符
+right(str,n)
+截取str右边n个字符
+substring(str,index,len)
+从str的index位置截取len个字符
+
+字符串去空函数：
+ltrim(str):
+去除字符串str左边的空格
+rtrim(str)
+去除字符串str右边的空格
+trim()
+去除字符串str两边的空格
+
+字符串替换函数：
+insert(str1,index,len,str2)
+使用str2从str1的index位置替换str1的len个元素
+replace(str,str1,str2)
+将str中的子串str1全部替换成str2
+
+用于处理数值的函数：
+绝对值函数：abs(x)
+返回x的绝对值
+向上取整函数：ceil(x)
+返回x的向上取整的整数
+向下取整函数:floor(x)
+返回x的向下取整的整数
+取模函数：mod(x,y)
+返回x mod y的结果
+随机数函数：rand()
+返回0-1内的随机数
+如果想对某种情况都使用同一随机值，可以使用rand(x),x相同时返回同样的随机结果。
+四舍五入函数：round(x,y)
+返回数值x带有y为小数结果的数值（四舍五入）
+数值截取函数：truncate(x,y)
+返回数值x截取y位小数的结果（不四舍五入）
+
+用于处理时间日期的函数：
+获取当前日期：curdate()，current_date()
+获取当前时间：curtime()，current_time()
+获取当前日期时间：now()
+从日期中选择出月份数：month(date),monthname(date)
+从日期中选择出周数：week(date)
+从日期中选择出周数：year(date)
+从时间中选择出小时数：hour(time)
+从时间中选择出分钟数：minute(time)
+从时间中选择出今天是周几：weekday(date),dayname(date)
+
+
+第二章 Mysql中的myisam与innodb的区别
+
+1、InooDB支持事务，而MyISAM不支持事务
+
+2、InnoDB支持行级锁，而MyISAM支持表级锁
+
+3、InnoDB支持MVCC，而MyISAM不支持
+
+4、InnoDB支持外键，而MyISAM不支持
+
+5、InnoDB不支持全文索引，而MyISAM支持
+
+MYSQL 有哪些存储引擎，各自优缺点。
+MyISAM： 拥有较高的插入，查询速度，但不支持事务
+InnoDB ：5.5版本后Mysql的默认数据库，事务型数据库的首选引擎，支持ACID事务，支持行级锁定
+BDB： 源自Berkeley DB，事务型数据库的另一种选择，支持COMMIT和ROLLBACK等其他事务特性
+Memory ：所有数据置于内存的存储引擎，拥有极高的插入，更新和查询效率。但是会占用和数据量成正比的内存空间。并且其内容会在Mysql重新启动时丢失
+Merge ：将一定数量的MyISAM表联合而成一个整体，在超大规模数据存储时很有用
+Archive ：非常适合存储大量的独立的，作为历史记录的数据。因为它们不经常被读取。Archive拥有高效的插入速度，但其对查询的支持相对较差
+Federated： 将不同的Mysql服务器联合起来，逻辑上组成一个完整的数据库。非常适合分布式应用
+Cluster/NDB ：高冗余的存储引擎，用多台数据机器联合提供服务以提高整体性能和安全性。适合数据量大，安全和性能要求高的应用
+CSV： 逻辑上由逗号分割数据的存储引擎。它会在数据库子目录里为每个数据表创建一个.CSV文件。这是一种普通文本文件，每个数据行占用一个文本行。CSV存储引擎不支持索引。
+BlackHole ：黑洞引擎，写入的任何数据都会消失，一般用于记录binlog做复制的中继
+另外，Mysql的存储引擎接口定义良好。有兴趣的开发者通过阅读文档编写自己的存储引擎。
+
+Mysql 的索引原理，索引的类型有哪些，如何创建合理的索引，索引如何优化。
+索引是通过复杂的算法，提高数据查询性能的手段。从磁盘io到内存io的转变
+普通索引，主键，唯一，单列/多列索引建索引的几大原则
+1.最左前缀匹配原则，非常重要的原则，mysql会一直向右匹配直到遇到范围查询(>、<、between、like)就停止匹配，比如a = 1 and b = 2 and c > 3 and d = 4 如果建立(a,b,c,d)顺序的索引，d是用不到索引的，如果建立(a,b,d,c)的索引则都可以用到，a,b,d的顺序可以任意调整。
+2.=和in可以乱序，比如a = 1 and b = 2 and c = 3 建立(a,b,c)索引可以任意顺序，mysql的查询优化器会帮你优化成索引可以识别的形式
+3.尽量选择区分度高的列作为索引,区分度的公式是count(distinct col)/count(*)，表示字段不重复的比例，比例越大我们扫描的记录数越少，唯一键的区分度是1，而一些状态、性别字段可能在大数据面前区分度就是0，那可能有人会问，这个比例有什么经验值吗？使用场景不同，这个值也很难确定，一般需要join的字段我们都要求是0.1以上，即平均1条扫描10条记录
+4.索引列不能参与计算，保持列“干净”，比如from_unixtime(create_time) = ’2014-05-29’就不能使用到索引，原因很简单，b+树中存的都是数据表中的字段值，但进行检索时，需要把所有元素都应用函数才能比较，显然成本太大。所以语句应该写成create_time = unix_timestamp(’2014-05-29’);
+5.尽量的扩展索引，不要新建索引。比如表中已经有a的索引，现在要加(a,b)的索引，那么只需要修改原来的索引即可
+
+
+第三章 Mysql的默认隔离级别
+Mysql默认的事务隔离级别是可重复读(Repeatable Read)，那互联网项目中Mysql也是用默认隔离级别，不做修改么？
+OK，不是的，我们在项目中一般用读已提交(Read Commited)这个隔离级别！
+在Oracle，SqlServer中都是选择读已提交(Read Commited)作为默认的隔离级别，为什么Mysql不选择读已提交(Read Commited)作为默认隔离级别，而选择可重复读(Repeatable Read)作为默认的隔离级别呢？
+这个是有历史原因的，当然要从我们的主从复制开始讲起了！
+主从复制，是基于什么复制的？
+是基于binlog复制的！这里不想去搬binlog的概念了，就简单理解为binlog是一个记录数据库更改的文件吧～
+binlog有几种格式？
+OK，三种，分别是
+statement:记录的是修改SQL语句
+row：记录的是每行实际数据的变更
+mixed：statement和row模式的混合
+那Mysql在5.0这个版本以前，binlog只支持STATEMENT这种格式！而这种格式在读已提交(Read Commited)这个隔离级别下主从复制是有bug的，因此Mysql将可重复读(Repeatable Read)作为默认的隔离级别！
+那么，当我们了解完mysql选可重复读(Repeatable Read)作为默认隔离级别的原因后，接下来我们将其和读已提交(Read Commited)进行对比，来说明为什么在互联网项目为什么将隔离级别设为读已提交(Read Commited)！
+为了便于描述，下面将
+可重复读(Repeatable Read)，简称为RR；
+读已提交(Read Commited)，简称为RC；
+缘由一：在RR隔离级别下，存在间隙锁，导致出现死锁的几率比RC大的多！
+缘由二：在RR隔离级别下，条件列未命中索引会锁表！而在RC隔离级别下，只锁行
+缘由三：在RC隔离级别下，半一致性读(semi-consistent)特性增加了update操作的并发性！
+
+
+第四章 MySQL主从复制原理
+
+MySQL主从复制涉及到三个线程，一个运行在主节点（log dump thread），其余两个(I/O thread, SQL thread)运行在从节点。
+
+主节点 binary log dump 线程
+当从节点连接主节点时，主节点会创建一个log dump 线程，用于发送bin-log的内容。在读取bin-log中的操作时，此线程会对主节点上的bin-log加锁，当读取完成，甚至在发动给从节点之前，锁会被释放。
+
+从节点I/O线程
+当从节点上执行`start slave`命令之后，从节点会创建一个I/O线程用来连接主节点，请求主库中更新的bin-log。I/O线程接收到主节点binlog dump 进程发来的更新之后，保存在本地relay-log中。
+
+从节点SQL线程
+SQL线程负责读取relay log中的内容，解析成具体的操作并执行，最终保证主从数据的一致性。
+对于每一个主从连接，都需要三个进程来完成。当主节点有多个从节点时，主节点会为每一个当前连接的从节点建一个binary log dump 进程，而每个从节点都有自己的I/O进程，SQL进程。从节点用两个线程将从主库拉取更新和执行分成独立的任务，这样在执行同步数据任务的时候，不会降低读操作的性能。比如，如果从节点没有运行，此时I/O进程可以很快从主节点获取更新，尽管SQL进程还没有执行。如果在SQL进程执行之前从节点服务停止，至少I/O进程已经从主节点拉取到了最新的变更并且保存在本地relay日志中，当服务再次起来之后，就可以完成数据的同步。
+要实施复制，首先必须打开Master 端的binary log（bin-log）功能，否则无法实现。
+因为整个复制过程实际上就是Slave 从Master 端获取该日志然后再在自己身上完全顺序的执行日志中所记录的各种操作。
+
+复制的基本过程如下：
+从节点上的I/O 进程连接主节点，并请求从指定日志文件的指定位置（或者从最开始的日志）之后的日志内容；
+主节点接收到来自从节点的I/O请求后，通过负责复制的I/O进程根据请求信息读取指定日志指定位置之后的日志信息，返回给从节点。返回信息中除了日志所包含的信息之外，还包括本次返回的信息的bin-log file 的以及bin-log position；从节点的I/O进程接收到内容后，将接收到的日志内容更新到本机的relay log中，并将读取到的binary log文件名和位置保存到master-info 文件中，以便在下一次读取的时候能够清楚的告诉Master“我需要从某个bin-log 的哪个位置开始往后的日志内容，请发给我”；
+Slave 的 SQL线程检测到relay-log 中新增加了内容后，会将relay-log的内容解析成在祝节点上实际执行过的操作，并在本数据库中执行。
+
+MySQL主从复制模式
+MySQL主从复制默认是异步的模式。MySQL增删改操作会全部记录在binary log中，当slave节点连接master时，会主动从master处获取最新的bin log文件。并把bin log中的sql relay。
+
+
+
+

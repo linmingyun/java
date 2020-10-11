@@ -1,0 +1,11 @@
+第一章 RabbitMQ如何实现集群高可用
+集群是保证服务可靠性的一种方式，同时可以通过水平扩展以提升消息吞吐能力。RabbitMQ是用分布式程序设计语言erlang开发的，所以天生就支持集群。接下来，将介绍RabbitMQ分布式消息处理方式、集群模式、节点类型，并动手搭建一个高可用集群环境，最后通过java程序来验证集群的高可用性。
+
+1. 三种分布式消息处理方式
+
+RabbitMQ分布式的消息处理方式有以下三种：
+1、Clustering：不支持跨网段，各节点需运行同版本的Erlang和RabbitMQ, 应用于同网段局域网。
+2、Federation：允许单台服务器上的Exchange或Queue接收发布到另一台服务器上Exchange或Queue的消息, 应用于广域网，。
+3、Shovel：与Federation类似，但工作在更低层次。
+
+RabbitMQ对网络延迟很敏感，在LAN环境建议使用clustering方式;在WAN环境中，则使用Federation或Shovel。我们平时说的RabbitMQ集群，说的就是clustering方式，它是RabbitMQ内嵌的一种消息处理方式，而Federation或Shovel则是以plugin形式存在。
