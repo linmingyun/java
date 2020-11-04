@@ -253,6 +253,186 @@ G1是一款面向服务端应用的垃圾收集器。HotSpot开发团队赋予�
 2 总结
 各个收集器都有自己适应的业务场景，一般来说在生产中都会使用ParNew＋CMS的方式分代收集回收。针对于新生代来说，根据其特性，总的来说还是使用复制算法。而针对于老年代来说算法一般会使用两种，标记－清除和标记－整理，每一种都有自己适用的场景。但是在目前我遇到的生产中还是使用CMS 标记清除的这种比较多，也是比较常用的，虽然标记－清除这种算法会导致大量的内存碎片，但是也是可以通过一种暴力的方式解决，就是FULL GC，G1收集器是比较完美的一种收集器，但是在目前的生产中依旧用得很少。
 
-
-
 https://wangkang007.gitbooks.io/jvm/content/la_ji_shou_ji_qi.html
+
+
+6.当出现了内存溢出，你怎么排错。
+首先分析是什么类型的内存溢出，对应的调整参数或者优化代码。
+
+jvm调优
+1. 常见问题
+1.1 内存泄漏
+内存泄漏一般可以理解为系统资源（各方面的资源，堆、栈、线程等）在错误使用的情况下，导致使用完毕的资源无法回收（或没有回收），从而导致新的资源分配请求无法完成，引起系统错误。整个JVM内存大小=年轻代大小 + 年老代大小 + 持久代大小,目前来说，常遇到的泄漏问题如下：
+
+年老代堆空间被占满
+ 年老代堆空间被占满
+ 异常： java.lang.OutOfMemoryError: Java heap space
+这是最典型的内存泄漏方式，简单说就是所有堆空间都被无法回收的垃圾对象占满，虚拟机无法再在分配新空间。这种情况一般来说是因为内存泄漏或者内存不足造成的。某些情况因为长期的无法释放对象，运行时间长了以后导致对象数量增多，从而导致的内存泄漏。另外一种就是因为系统的原因，大并发加上大对象，Survivor Space区域内存不够，大量的对象进入到了老年代,然而老年代的内存也不足时，从而产生了Full GC，但是这个时候Full GC也无发回收。这个时候就会产生java.lang.OutOfMemoryError: Java heap space
+
+解决方案如下：
+
+代码内的内存泄漏可以通过一些分析工具进行分析，然后找出泄漏点进行改善。
+第二种原因导致的OutOfMemoryError可以通过，优化代码和增加Survivor Space等方式去优化。
+持久代被占满
+持久代被占满
+异常：java.lang.OutOfMemoryError: PermGen space
+Perm空间被占满。无法为新的class分配存储空间而引发的异常。这个异常以前是没有的，但是在Java反射大量使用的今天这个异常比较常见了。主要原因就是大量动态反射生成的类不断被加载，最终导致Perm区被占满。 解决方案：
+
+增加持久代的空间 -XX:MaxPermSize=100M。
+如果有自定义类加载的需要排查下自己的代码问题。
+堆栈溢出
+堆栈溢出
+异常：java.lang.StackOverflowError
+一般就是递归没返回，或者循环调用造成
+
+线程堆栈满
+线程堆栈满
+异常：Fatal: Stack size too small
+java中一个线程的空间大小是有限制的。JDK5.0以后这个值是1M。与这个线程相关的数据将会保存在其中。但是当线程空间满了以后，将会出现上面异常。 解决：增加线程栈大小。-Xss2m。但这个配置无法解决根本问题，还要看代码部分是否有造成泄漏的部分。
+
+系统内存被占满
+系统内存被占满
+异常：java.lang.OutOfMemoryError: unable to create new native thread
+这个异常是由于操作系统没有足够的资源来产生这个线程造成的。系统创建线程时，除了要在Java堆中分配内存外，操作系统本身也需要分配资源来创建线程。因此，当线程数量大到一定程度以后，堆中或许还有空间，但是操作系统分配不出资源来了，就出现这个异常了。 分配给Java虚拟机的内存愈多，系统剩余的资源就越少，因此，当系统内存固定时，分配给Java虚拟机的内存越多，那么，系统总共能够产生的线程也就越少，两者成反比的关系。同时，可以通过修改-Xss来减少分配给单个线程的空间，也可以增加系统总共内生产的线程数。 解决：
+
+1. 重新设计系统减少线程数量。
+2. 线程数量不能减少的情况下，通过-Xss减小单个线程大小。以便能生产更多的线程。
+2 优化方法
+2.1 优化目标
+优化jvm其实是为了满足高吞吐，低延迟需求来优化GC，之前遇到的情况中，其实不优化GC也是可以正常于行的，只不过偶尔会因为高并发给压垮，但是也可以通过其他方式来解决这个问题。
+
+2.2 优化GC步骤
+首先需要观察目前垃圾回收的情况，分析出老年代和年轻代回收的情况，适当的去调整内存大小和-XX:SurvivorRatio的比例。
+根据垃圾收集器的特性，选择适合自己业务的垃圾收集器，一般来说现在的WEB服务都是CMS＋ParNew收集器。根据CMS收集器一般来说就会产生大量碎片，根据自己的需求悬着相应的压缩频率即可。
+不断的调整jvm内存比例，老年代、年轻代、以及持久代的比例，直到测试出一个比较满意的值。
+2.3 优化总结
+总的来说GC优化不仅仅是加大内存可以解决的。需要综合下业务特征和GC的时间，减少新生代大小可以缩短新生代GC停顿时间，因为这样被复制到survivor区域或者被提升的数据更少，但是这样一来yangGC的频率就会很高，而且会有更多的垃圾进入到了老年代。如果增加新生代大小又会导致回收的时间和复制的时间变高，所以一般来说需要在这个中间进行折中。
+
+像是针对大部分数据都在Eden区域被回收，并且几乎没有对象在survivor区域死亡的场景，完全可以减少-XX:MaxTenuringThreshold这个参数，让数据提早进入Old，减少survivor区域的复制，来提高效率。
+
+3.案例分析
+3.1 案例1 Intellij IDEA 2016优化
+公司系统参数
+-server
+-Xms2g
+-Xmx2g
+-Xmn768m
+-XX:+UseConcMarkSweepGC
+-XX:+UseParNewGC
+-XX:CMSInitiatingOccupancyFraction=60
+-XX:CMSTriggerRatio=70
+-Xloggc:/data/bpm.coffee.session/logs/gc_20160704_110306.log
+-XX:+PrintGCDateStamps
+-XX:+PrintGCDetails
+-XX:+HeapDumpOnOutOfMemoryError
+-XX:HeapDumpPath=/data/bpm.coffee.session/tmp/heapdump_20160704_110306.hprof
+网上给的配置参数
+-server
+-Xms6000M
+-Xmx6000M
+-Xmn500M
+-XX:PermSize=500M
+-XX:MaxPermSize=500M
+-XX:SurvivorRatio=65536
+-XX:MaxTenuringThreshold=0
+-Xnoclassgc
+-XX:+DisableExplicitGC
+-XX:+UseParNewGC
+-XX:+UseConcMarkSweepGC
+-XX:+UseCMSCompactAtFullCollection
+-XX:CMSFullGCsBeforeCompaction=0
+-XX:+CMSClassUnloadingEnabled
+-XX:-CMSParallelRemarkEnabled
+-XX:CMSInitiatingOccupancyFraction=90
+-XX:SoftRefLRUPolicyMSPerMB=0
+-XX:+PrintClassHistogram
+-XX:+PrintGCDetails
+-XX:+PrintGCTimeStamps
+-XX:+PrintHeapAtGC
+-Xloggc:log/gc.log
+Intellij IDEA 2016 默认参数
+-Xms158m
+-Xmx750m
+-XX:MaxPermSize=350m
+-XX:ReservedCodeCacheSize=240m
+-XX:+UseCompressedOops
+Intellij IDEA 2016
+情景分析：
+
+-Xms2g -Xmx2g 这两个主要是设置初始堆大小和最大堆的大小，对比目前公司系统，网上参数和Intellij IDEA默认参数,总的来说在于场景问题，-Xms初始堆针对于服务器端的来说一般会设置跟最大堆一样大，为什么呢？因为对于服务器来说启动时间并不是最重要的，如果不够了再去申请，这个对于大并发的场景来说是不合适的。而针对于客户端Intellij IDEA来说，重点是启动时间，所以初始堆设置比较小，这样启动的时间比较快。
+-server 这个参数主要是用来指定运行模式的，指定了－server那么启动的速度就会慢一些，所以针对于IDEA这种编辑器来说一般都使用默认的client模式
+-XX:+UseCompressedOops 使用compressed pointers。这个参数默认在64bit的环境下默认启动，但是如果JVM的内存达到32G后，这个参数就会默认为不启动，因为32G内存后，压缩就没有多大必要了，要管理那么大的内存指针也需要很大的宽度了
+-XX:ReservedCodeCacheSize=240m 这个主要是用来编译代码的，针对server来说用处不是很大.
+针对于服务端来说-XX:+UseConcMarkSweepGC 老年代基本都是使用cms收集器，而年轻代都是使用-XX:+UseParNewGC进行收集的。
+-XX:CMSInitiatingOccupancyFraction=60 这个参数主要是告诉cms收集器，内存到60%的时候进行回收，这个比例主要还是针对系统业务来决定的，太低容易内存溢出，太高容易内存浪费，而且老年代垃圾回收频率高。一般来说都是在70到90之间，60过低了。
+-Xloggc 这个参数一般都会打开，能够很好的排查jvm的内存溢出.
+-Xnoclassgc 这个针对一般业务来说都会打开，不让class进行gc.
+-XX:+DisableExplicitGC web业务来说，由于大家开发水平不一致，难保有人会使用System.gc(),高并发的场景这个肯定会是一个很大的影响，所以一般都关掉
+-XX+UseCMSCompactAtFullCollection消除cms碎片
+-XX:CMSFullGCsBeforeCompaction 这个上面填的0，如果没有特殊场景，最好设置成1或者2.
+-XX:-CMSParallelRemarkEnabled 主要用来降低cms标记的停顿，但是这个参数会增加碎片化，
+SoftRefLRUPolicyMSPerMB 这个参数指定了软饮用停留的时间，一般来说设置为0就好了，感觉生产中这个参数影响并不大，如果是针对单机内存使用缓存比较多的场景，这个值可以设置到1s左右，增加加吞吐量。
+总结
+jvm的调优需要根据自己的业务场景进行调整，没有万能的参数，但是总的来说，在生产环境中都会打开这几个必须的参数
+
+verbose: gc
+Xloggc:<pathtofile>
+XX:+PrintGCDetails
+XX:+PrintTenuringDistribution
+
+
+7.JVM 内存模型的相关知识了解多少，比如重排序，内存屏障，happen-before，主内存，工作内存等。
+内存屏障：为了保障执行顺序和可见性的一条cpu指令
+重排序：为了提高性能，编译器和处理器会对执行进行重拍
+happen-before：操作间执行的顺序关系。有些操作先发生。
+主内存：共享变量存储的区域即是主内存
+工作内存：每个线程copy的本地内存，存储了该线程以读/写共享变量的副本
+
+8.简单说说你了解的类加载器。
+类加载器的分类（bootstrap,ext,app,curstom），类加载的流程(load-link-init)
+
+9.讲讲 JAVA 的反射机制。
+Java程序在运行状态可以动态的获取类的所有属性和方法，并实例化该类，调用方法的功能
+
+10.你们线上应用的 JVM 参数有哪些。
+-server
+-Xms6000M
+-Xmx6000M
+-Xmn500M
+-XX:PermSize=500M
+-XX:MaxPermSize=500M
+-XX:SurvivorRatio=65536
+-XX:MaxTenuringThreshold=0
+-Xnoclassgc
+-XX:+DisableExplicitGC
+-XX:+UseParNewGC
+-XX:+UseConcMarkSweepGC
+-XX:+UseCMSCompactAtFullCollection
+-XX:CMSFullGCsBeforeCompaction=0
+-XX:+CMSClassUnloadingEnabled
+-XX:-CMSParallelRemarkEnabled
+-XX:CMSInitiatingOccupancyFraction=90
+-XX:SoftRefLRUPolicyMSPerMB=0
+-XX:+PrintClassHistogram
+-XX:+PrintGCDetails
+-XX:+PrintGCTimeStamps
+-XX:+PrintHeapAtGC
+-Xloggc:log/gc.log
+
+11.g1 和 cms 区别,吞吐量优先和响应优先的垃圾收集器选择。
+Cms是以获取最短回收停顿时间为目标的收集器。基于标记-清除算法实现。比较占用cpu资源，切易造成碎片。
+G1是面向服务端的垃圾收集器，是jdk9默认的收集器，基于标记-整理算法实现。可利用多核、多cpu，保留分代，实现可预测停顿，可控。
+请解释如下 jvm 参数的含义：
+-server -Xms512m -Xmx512m -Xss1024K
+-XX:PermSize=256m -XX:MaxPermSize=512m -XX:MaxTenuringThreshold=20
+XX:CMSInitiatingOccupancyFraction=80 -XX:+UseCMSInitiatingOccupancyOnly。
+Server模式启动
+最小堆内存512m
+最大512m
+每个线程栈空间1m
+永久代256m
+最大永久代512m
+最大转为老年代检查次数20
+Cms回收开启时机：内存占用80%
+命令JVM不基于运行时收集的数据来启动CMS垃圾收集周期
+
