@@ -1,0 +1,14 @@
+windows安装Docker Toolbox之后点击Docker Quickstart Terminal启动，如果不能弹出命令窗口则需要将其属性窗口里的目标改为Git安装路径E:\UnitedInstallPlace\Git\bin\bash.exe，打开命令窗口会出现无法下载boot2docker.iso的错误信息，则需要将E:\UnitedInstallPlace\Docker Toolbox\boot2docker.iso复制到C:\Users\linmingyun\.docker\machine\cache\路径下，然后断开网络重新启动命令窗口，则可以进行正常安装。
+
+查看Docker Machine是否安装成功：
+docker-machine -version  
+docker查看IP：
+docker-machine ip default
+
+
+docker-machine create --engine-registry-mirror=https://registry.docker-cn.com -d virtualbox default
+镜像加速
+docker-machine ssh default 
+sudo sed -i "s|EXTRA_ARGS='|EXTRA_ARGS='--registry-mirror=https://registry.docker-cn.com |g" /var/lib/boot2docker/profile 
+exit 
+docker-machine restart default
